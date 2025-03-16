@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -12,7 +15,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return "hallo teacher";
+        return view('admin.courses.index');
     }
 
     /**
@@ -20,7 +23,10 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        $category = Category::all();
+        return view('admin.courses.create',[
+            'categories' => $category
+        ]);
     }
 
     /**
@@ -29,6 +35,31 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
+        $validate = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|integer',
+            'cover' => 'required|image|mimes:png,jpg,svg'
+        ]);
+
+        DB::beginTransaction();
+        try{
+            if($request->hasFile('cover')){
+                $coverPath = $request->file('cover')->store('product_store', 'public');
+                $validate['cover'] = $coverPath;
+            }
+            $validate['slug'] = Str::slug($request->name);
+            $newCourse = Course::create($validate);
+            DB::commit();
+            return redirect()->route('dashboard.courses.index');
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            $error = ValidationException::withMessage([
+                'system_error' => ['system error!'. $e->getMessage()]
+            ]);
+            throw $error;
+        }
+        
     }
 
     /**
