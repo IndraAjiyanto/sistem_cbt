@@ -208,12 +208,16 @@
                                 <a href="course-students.html" class="flex items-center justify-between font-bold text-sm w-full">
                                     Students
                                 </a>
-                                <a href="course-details.html" class="flex items-center justify-between font-bold text-sm w-full">
+                                <a href="{{route('dashboard.courses.edit', $course)}}" class="flex items-center justify-between font-bold text-sm w-full">
                                     Edit Course
                                 </a>
-                                <a href="#" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
+                                <form action="{{route('dashboard.courses.destroy', $course)}}" enctype="multipart/form-data" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" name="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
                                     Delete
-                                </a>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
