@@ -231,8 +231,10 @@
                         </div>
                         <div class="flex items-center gap-[14px]">
                             <a href="{{route('dashboard.course_questions.edit', $question)}}" class="bg-[#0A090B] p-[14px_30px] rounded-full text-white font-semibold">Edit</a>
-                            <form action="">
-                                <button class="w-[52px] h-[52px] flex shrink-0 items-center justify-center rounded-full bg-[#FD445E]">
+                            <form action="{{route('dashboard.course_questions.destroy',$question)}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-[52px] h-[52px] flex shrink-0 items-center justify-center rounded-full bg-[#FD445E]">
                                     <img src="{{asset('images/icons/trash.svg')}}" alt="icon">
                                 </button>
                             </form>
