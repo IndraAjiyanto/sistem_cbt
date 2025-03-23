@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class CourseController extends Controller
 {
@@ -39,8 +40,8 @@ class CourseController extends Controller
     {
         //
         $validate = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|integer',
+            'question' => 'required|string|max:255',
+            'answer' => 'required|integer',
             'cover' => 'required|image|mimes:png,jpg,svg'
         ]);
 
@@ -71,9 +72,11 @@ class CourseController extends Controller
     {
         //
         $students = $course->students()->orderBy('id','DESC')->get();
+        $questions = $course->questions()->orderBy('id','DESC')->get();
         return view('admin.courses.manage',[
             'course' => $course,
-            'students' => $students
+            'students' => $students,
+            'questions' => $questions
         ]);
     }
 
