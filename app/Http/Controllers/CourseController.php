@@ -58,7 +58,7 @@ class CourseController extends Controller
         }
         catch(\Exception $e){
             DB::rollBack();
-            $error = ValidationException::withMessage([
+            $error = ValidationException::withMessages([
                 'system_error' => ['system error!'. $e->getMessage()]
             ]);
             throw $error;
@@ -118,7 +118,7 @@ class CourseController extends Controller
         }
         catch(\Exception $e){
             DB::rollBack();
-            $error = ValidationException::withMessage([
+            $error = ValidationException::withMessages([
                 'system_error' => ['system error!'. $e->getMessage()]
             ]);
             throw $error;
@@ -136,7 +136,7 @@ class CourseController extends Controller
             return redirect()->route('dashboard.courses.index');
         }
         catch(\Exception $e){
-            $error = ValidationException::withMessage([
+            $error = ValidationException::withMessages([
                 'system_error' => ['system error!'. $e->getMessage()]
             ]);
             throw $error;
