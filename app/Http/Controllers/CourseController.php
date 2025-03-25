@@ -40,8 +40,8 @@ class CourseController extends Controller
     {
         //
         $validate = $request->validate([
-            'question' => 'required|string|max:255',
-            'answer' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|integer',
             'cover' => 'required|image|mimes:png,jpg,svg'
         ]);
 
