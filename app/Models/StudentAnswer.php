@@ -14,6 +14,6 @@ class StudentAnswer extends Model
     protected $guarded = ['id'];
 
     public function question(){
-        return $this->belongsTo(CourseQuestion::class, 'course_questin_id');
+        return $this->belongsTo(CourseQuestion::class, 'course_question_id');
     }
 }

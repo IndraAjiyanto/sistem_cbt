@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\StudentAnswer;
+use App\Models\CourseQuestion;
 use Illuminate\Support\Facades\Auth;
 
 class LearningController extends Controller
@@ -19,14 +22,29 @@ class LearningController extends Controller
 
             if($answeredQuestionsCount < $totalQuestionsCount){
                 $firstUnansweredQuestion = CourseQuestion::where('course_id', $course->id)->whereNotIn('id', function($query) use ($user){
-                    $query->select('question_id')->from('student_answers')->where('user_id', $user->id);
+                    $query->select('course_question_id')->from('student_answers')->where('user_id', $user->id);
                 })->orderBy('id', 'asc')->first();
+                $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->id : null;
+            }else{
+                $course->nextQuestionId = null;
             }
         }
 
         return view('student.courses.index',[
-            'user' => $user,
-            'my_courses' => $my_courses 
+            'my_courses' => $my_courses
+        ]);
+    }
+
+    public function learning(Course $course, $question){
+        $user = Auth::user();
+        $isEnrolled = $user->courses()->where('course_id', $course->id)->exists();
+        if(!$isEnrolled){
+            abort(404);
+        }
+        $currentQuestion = CourseQuestion::where('course_id', $course->id)->where('id', $question)->firstOrFail();
+        return view('student.courses.learning',[
+            'course' => $course,
+            'question' => $currentQuestion
         ]);
     }
 }
