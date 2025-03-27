@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\CourseStudent;
+use App\Models\StudentAnswer;
 use Illuminate\Support\Facades\DB;
 
 class CourseStudentController extends Controller
@@ -13,9 +14,33 @@ class CourseStudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Course $course)
     {
         //
+        $students = $course->students()->orderBy('id','DESC')->get();
+        $questions = $course->questions()->orderBy('id','DESC')->get();
+        $totalQuestions = $questions->count();
+        foreach($students as $student){
+            $studentAnswers = StudentAnswer::whereHas('question', function ($query) use ($course){
+                $query->where('course_id', $course->id);
+            })->where('user_id', $student->id)->get();
+
+            $answerCount = $studentAnswers->count();
+            $correctAnswersCount = $studentAnswers->where('answer', 'correct')->count();
+
+            if($answerCount == 0){
+                $student->status = 'Not Started';
+            }else if($correctAnswersCount < $totalQuestions){
+                $student->status = 'Not Passed';
+            }else if($correctAnswersCount == $totalQuestions){
+                $student->status = 'Passed';
+            }
+        }
+        return view('admin.students.index',[
+            'course' => $course,
+            'questions' => $questions,
+            'students' => $students
+        ]);
     }
 
     /**
