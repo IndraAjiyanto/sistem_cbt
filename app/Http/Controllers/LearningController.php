@@ -48,6 +48,12 @@ class LearningController extends Controller
         ]);
     }
 
+    public function learning_finished(Course $course){
+        return view('student.courses.learning_finished',[
+            'course' => $course,
+        ]);
+    }
+
     public function learning_rapport(Course $course){
         $userId = Auth::id();
         $studentAnswers = StudentAnswer::with('question')->whereHas('question', function ($query) use ($course){
