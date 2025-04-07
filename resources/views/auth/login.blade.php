@@ -7,8 +7,8 @@
     <link href="{{asset('css/output.css')}}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
+  <title>Ujian Online CBT</title>
 </head>
-
 <body class="font-poppins text-[#0A090B]">
     <section id="signup" class="flex w-full min-h-[832px]">
         <nav class="flex items-center px-[50px] pt-[30px] w-full absolute top-0">

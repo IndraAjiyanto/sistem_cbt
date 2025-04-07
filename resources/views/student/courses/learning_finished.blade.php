@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{asset('css/output.css')}}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>Ujian Online CBT</title>
+
 </head>
 <body class="font-poppins text-[#0A090B]">
     <section id="content">
@@ -21,7 +23,7 @@
                 </div>
                 <div class="flex gap-3 items-center">
                     <div class="flex flex-col text-right">
-                        <p class="text-sm text-[#7F8190]">Howdy</p>
+                        <p class="text-sm text-[#7F8190]">{{Auth::user()->email}}</p>
                         <p class="font-semibold">{{Auth::user()->name}}</p>
                     </div>
                     <div class="w-[46px] h-[46px]">
